@@ -1,0 +1,15 @@
+{
+  "name": "advent_of_code_2021",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ramda": "^0.29.1"
+  }
+}
