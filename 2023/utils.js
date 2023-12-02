@@ -1,5 +1,5 @@
 import { argv } from 'node:process'
-import { trim, split, compose } from 'ramda'
+import { compose, lensIndex, split, trim } from 'ramda'
 
 
 export function log(thing) {
@@ -11,3 +11,5 @@ export function log(thing) {
 }
 
 export const as_lines = compose(split('\n'), trim)
+
+export const second_lens = lensIndex(1)
