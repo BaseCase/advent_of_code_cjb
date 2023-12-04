@@ -1,5 +1,5 @@
 import { argv } from 'node:process'
-import { addIndex, compose, lensIndex, map, match, split, trim, zip } from 'ramda'
+import { addIndex, compose, fromPairs, join, lensIndex, map, mergeAll, pipe, split, trim } from 'ramda'
 
 
 export function log(thing) {
@@ -11,12 +11,20 @@ export function log(thing) {
 }
 
 export const as_lines = compose(split('\n'), trim)
-
 export const second_lens = lensIndex(1)
-
 export const map_indexed = addIndex(map)
+export const point_to_key = join(',')
+export const key_to_point = pipe(split(','), map(Number.parseInt))
 
-export const match_with_indices = (regexp, str) => {
+export const matches_with_indices = (regexp, str) => {
   const matches = str.matchAll(regexp)
   return Array.from(matches).map(m => [m[0], m.index])
 }
+
+export const matches_with_coords = regex => pipe(
+  map_indexed((line, y) => map(
+    ([thing, x]) => [point_to_key([x, y]), thing],
+    matches_with_indices(regex, line))),
+  map(fromPairs),
+  mergeAll
+)
