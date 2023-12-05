@@ -33,15 +33,14 @@ export function day05(input) {
   const maps = parse_maps(input)
   const map_all = chain_map(maps)
 
-  const part01 = Math.min(...seeds.map(s => map_all(s)))
+  const part01 = Math.min(...seeds.map(map_all))
 
   const seeds_pairs = splitEvery(2, seeds)
-  const mins_per_pair = seeds_pairs.map(([start, len]) => {
-    return reduce(
-      (lowest, seed) => min(lowest, map_all(seed)),
-      Infinity,
-      lazy_series(start, start+len))
-  })
+  const mins_per_pair = seeds_pairs.map(([start, len]) => reduce(
+    (lowest, seed) => min(lowest, map_all(seed)),
+    Infinity,
+    lazy_series(start, start+len))
+  )
   const part02 = Math.min(...mins_per_pair)
 
   return [part01, part02]
