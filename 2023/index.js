@@ -4,6 +4,7 @@ import { day02 } from './day02.js'
 import { day03 } from './day03.js'
 import { day04 } from './day04.js'
 import { day05 } from './day05.js'
+import { day06 } from './day06.js'
 
 
 const days = [
@@ -12,6 +13,7 @@ const days = [
   // 'day03',        // [553825, 93994191]
   // 'day04',        // [25010, 9924412]
   // 'day05',        // [324724204, 104070862]    NOTE: slow solution, takes a few minutes to run.
+  'day06',         // [211904, 43364472]
 ]
 
 
