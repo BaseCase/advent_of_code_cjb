@@ -12,6 +12,7 @@ export function log(thing) {
 }
 
 export const as_lines = compose(split('\n'), trim)
+export const head_lens = lensIndex(0)
 export const second_lens = lensIndex(1)
 export const map_indexed = addIndex(map)
 export const point_to_key = join(',')
