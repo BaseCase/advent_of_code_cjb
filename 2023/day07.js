@@ -1,4 +1,4 @@
-import { apply, ascend, collectBy, identity, length, map, partition, pipe, prop, reduce, sort, sortWith, split, sum, zip } from 'ramda'
+import { apply, ascend, collectBy, identity, juxt, length, map, partition, pipe, prop, reduce, sort, sortWith, split, sum, zip } from 'ramda'
 import { as_lines, map_indexed } from './utils.js'
 
 
@@ -55,4 +55,4 @@ const calculate_score = allow_jokers => pipe(
 const part01 = calculate_score(false)
 const part02 = calculate_score(true)
 
-export const day07 = input => [part01(input), part02(input)]
+export const day07 = juxt([part01, part02])
