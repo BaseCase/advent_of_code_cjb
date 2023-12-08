@@ -37,3 +37,12 @@ export function* lazy_series(start, end) {
     yield i
   }
 }
+
+export function* infinite_sequence(seed) {
+  let i = 0
+  while (true) {
+    let el = seed[i++]
+    yield el
+    if (i === seed.length) i = 0
+  }
+}
