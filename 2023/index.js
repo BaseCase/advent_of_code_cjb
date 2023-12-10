@@ -8,6 +8,7 @@ import { day06 } from './day06.js'
 import { day07 } from './day07.js'
 import { day08 } from './day08.js'
 import { day09 } from './day09.js'
+import { day10 } from './day10.js'
 
 
 const days = [
@@ -19,7 +20,8 @@ const days = [
   // 'day06',        // [211904, 43364472]
   // 'day07',        // [254024898, 254115617]
   // 'day08',        // [19241, 9606140307013]
-  'day09'         // [1930746032, 1154]
+  // 'day09'         // [1930746032, 1154]
+  'day10',        // [7097, 355]
 ]
 
 
