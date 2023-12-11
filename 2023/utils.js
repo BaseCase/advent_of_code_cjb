@@ -1,6 +1,5 @@
-import { argv } from 'node:process'
-import * as r from 'ramda'
-import { addIndex, compose, fromPairs, join, lensIndex, map, mergeAll, pipe, split, trim } from 'ramda'
+import {argv} from 'node:process'
+import { addIndex, chain, compose, curry, fromPairs, join, lensIndex, map, match, mergeAll, pipe, split, trim } from 'ramda'
 
 
 export function log(thing) {
@@ -15,10 +14,15 @@ export const as_lines = compose(split('\n'), trim)
 export const head_lens = lensIndex(0)
 export const second_lens = lensIndex(1)
 export const map_indexed = addIndex(map)
-export const chain_indexed = r.addIndex(r.chain)
+export const chain_indexed = addIndex(chain)
 export const point_to_key = join(',')
 export const key_to_point = pipe(split(','), map(Number.parseInt))
-export const parse_numbers = r.compose(r.map(Number.parseInt), r.match(/(-?\d+)/g))
+export const parse_numbers = compose(map(Number.parseInt), match(/(-?\d+)/g))
+
+// given a 2D array, map over each element, returning a flat array. callback fn takes args (element, x, y)
+export const grid_map = curry((fn, grid) =>
+  chain_indexed((row, y) =>
+    map_indexed((el, x) => fn(el, x, y), row), grid))
 
 export const matches_with_indices = (regexp, str) => {
   const matches = str.matchAll(regexp)

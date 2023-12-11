@@ -1,5 +1,5 @@
 import { all, count, equals, filter, isNil, map, median, pipe, range, reject, split, sum, transpose, xprod } from 'ramda'
-import { as_lines, chain_indexed, map_indexed } from './utils.js'
+import { as_lines, grid_map } from './utils.js'
 
 
 const all_empty = all(equals('.'))
@@ -14,9 +14,8 @@ const find_empty_space = pipe(
 
 const find_galaxies = pipe(
   as_lines,
-  chain_indexed((row, y) =>
-    map_indexed((col, x) => col === '#' ? [x, y] : null, row)
-  ), reject(isNil))
+  grid_map((el, x, y) => el === '#' ? [x, y] : null),
+  reject(isNil))
 
 export const day11 = input => {
   const [empty_rows, empty_cols] = find_empty_space(input)
