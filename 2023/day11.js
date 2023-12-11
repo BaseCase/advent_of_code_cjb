@@ -1,12 +1,11 @@
-import { all, count, equals, isNil, map, median, pipe, range, reduce, reject, split, sum, transpose, xprod } from 'ramda'
+import { all, count, equals, filter, isNil, map, median, pipe, range, reject, split, sum, transpose, xprod } from 'ramda'
 import { as_lines, chain_indexed, map_indexed } from './utils.js'
 
 
 const all_empty = all(equals('.'))
 
-const empty_idxs = rows => reduce(
-  (empties, idx) => all_empty(rows[idx]) ? [...empties, idx] : empties,
-  [],
+const empty_idxs = rows => filter(
+  idx => all_empty(rows[idx]),
   range(0, rows[0].length))
 
 const find_empty_space = pipe(
