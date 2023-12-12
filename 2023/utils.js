@@ -3,6 +3,7 @@ import { addIndex, chain, compose, curry, fromPairs, join, lensIndex, map, match
 
 
 export function log(thing) {
+  // return
   const filepath = argv[1].split('/')
   const filename = filepath[filepath.length-1]
   // if (filename !== 'index.js')
