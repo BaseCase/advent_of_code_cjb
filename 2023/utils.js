@@ -1,5 +1,23 @@
-import {argv} from 'node:process'
-import { addIndex, chain, compose, curry, fromPairs, join, lensIndex, map, match, mergeAll, pipe, split, trim } from 'ramda'
+import { argv } from 'node:process'
+import {
+  addIndex,
+  chain, complement,
+  compose,
+  curry, equals,
+  fromPairs,
+  head,
+  isEmpty,
+  join,
+  lensIndex,
+  map,
+  match,
+  mergeAll,
+  negate,
+  pipe,
+  split,
+  splitWhenever,
+  trim
+} from 'ramda'
 
 
 export function log(thing) {
@@ -12,6 +30,7 @@ export function log(thing) {
 }
 
 export const as_lines = compose(split('\n'), trim)
+export const group_by_blank_lines = pipe(as_lines, splitWhenever(compose(isEmpty, head)))
 export const head_lens = lensIndex(0)
 export const second_lens = lensIndex(1)
 export const map_indexed = addIndex(map)
@@ -19,6 +38,7 @@ export const chain_indexed = addIndex(chain)
 export const point_to_key = join(',')
 export const key_to_point = pipe(split(','), map(Number.parseInt))
 export const parse_numbers = compose(map(Number.parseInt), match(/(-?\d+)/g))
+export const not_equals = complement(equals)
 
 // given a 2D array, map over each element, returning a flat array. callback fn takes args (element, x, y)
 export const grid_map = curry((fn, grid) =>

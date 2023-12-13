@@ -1,16 +1,11 @@
-import { compose, head, isEmpty, map, min, pipe, reduce, splitEvery, splitWhenever, tail } from 'ramda'
-import { as_lines, lazy_series, parse_numbers } from './utils.js'
+import { head, map, min, pipe, reduce, splitEvery, tail } from 'ramda'
+import { group_by_blank_lines, lazy_series, parse_numbers } from './utils.js'
 
 
-const groups = pipe(
-  as_lines,
-  splitWhenever(compose(isEmpty, head))
-)
-
-const parse_seeds = pipe(groups, head, head, parse_numbers)
+const parse_seeds = pipe(group_by_blank_lines, head, head, parse_numbers)
 
 const parse_maps = pipe(
-  groups,
+  group_by_blank_lines,
   tail,
   map(pipe(
     tail,
