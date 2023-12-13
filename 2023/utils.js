@@ -1,27 +1,8 @@
 import { argv } from 'node:process'
-import {
-  addIndex,
-  chain, complement,
-  compose,
-  curry, equals,
-  fromPairs,
-  head,
-  isEmpty,
-  join,
-  lensIndex,
-  map,
-  match,
-  mergeAll,
-  negate,
-  pipe,
-  split,
-  splitWhenever,
-  trim
-} from 'ramda'
+import { addIndex, chain, complement, compose, curry, equals, fromPairs, head, isEmpty, join, lensIndex, map, match, mergeAll, pipe, split, splitWhenever, trim } from 'ramda'
 
 
 export function log(thing) {
-  // return
   const filepath = argv[1].split('/')
   const filename = filepath[filepath.length-1]
   // if (filename !== 'index.js')
