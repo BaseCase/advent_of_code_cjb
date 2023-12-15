@@ -122,7 +122,7 @@ export const day14 = input => {
     let hash = hash_the_map(the_map2)
     counter++
     if (already_seen.has(hash)) {
-      if (the_settled_cycle.size === 0) log("found our first dupe!")
+      if (the_settled_cycle.size === 0) //log("found our first dupe!")
       if (the_settled_cycle.has(hash)) {
         break;
       } else {
@@ -135,10 +135,10 @@ export const day14 = input => {
 
   // log(20 % 9)
 
-  log("until we saw a cycle")
-  log(already_seen.size)
-  log("the size of the cycle")
-  log(the_settled_cycle.size)
+  // log("until we saw a cycle")
+  // log(already_seen.size)
+  // log("the size of the cycle")
+  // log(the_settled_cycle.size)
   const cycles_needed_to_settle = already_seen.size
   const total = ((1000000000-cycles_needed_to_settle) % the_settled_cycle.size) + cycles_needed_to_settle
   const the_map3 = r.pipe(as_lines, r.map(r.split('')))(input)
@@ -172,4 +172,4 @@ O.#..O.#.#
 #OO..#....
 `
 
-console.log(day14(example_data))
+// console.log(day14(example_data))
