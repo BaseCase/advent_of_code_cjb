@@ -50,8 +50,6 @@ const parse_part02 = r.pipe(
 
 const calculate = instructions => {
   let vertices = []
-
-  // find perimeter
   let pos = [0,0]
   instructions.forEach(([dir, amt, color]) => {
     let [vecx, vecy] = vectors[dir]
@@ -60,15 +58,13 @@ const calculate = instructions => {
   })
 
   // shoelace algorithm to find polygon area
-  let sum1 = 0
-  let sum2 = 0
+  let sum1 = BigInt(0)
+  let sum2 = BigInt(0)
   for (let [p1, p2] of r.aperture(2, vertices)) {
-    sum1 += (p1[0] * p2[1])
-    sum2 += (p1[1] * p2[0])
+    sum1 += BigInt(p1[0] * p2[1])
+    sum2 += BigInt(p1[1] * p2[0])
   }
-  // sum1 += r.last(vertices)[0] * vertices[0][1]
-  // sum2 += vertices[0][0] * r.last(vertices)[1]
-  const area = Math.abs(sum1 - sum2) / 2
+  const area = (sum1 - sum2) / BigInt(2)
 
   // add the perimeter to the area for total squares dug
   const perim = r.pipe(
@@ -76,41 +72,14 @@ const calculate = instructions => {
     r.sum
   )(instructions)
 
-  const interior = area - perim/2 + 1
+  const interior = area - BigInt(perim/2) + BigInt(1)
 
-  return perim + interior
+  return BigInt(perim) + interior
 }
 
 export const day18 = input => {
   const part01 = calculate(parse_part01(input))
-
-  // log(parse_part02(input))
-
-  const insts = parse_part02(input)
-  const lines = as_lines(input)
-
-  // 59574883048261  is too low
-  // 59575039439293  is too high
   const part02 = calculate(parse_part02(input))
 
   return [part01, part02]
 }
-
-
-const example_data = `
-R 6 (#70c710)
-D 5 (#0dc571)
-L 2 (#5713f0)
-D 2 (#d2c081)
-R 2 (#59c680)
-D 2 (#411b91)
-L 5 (#8ceee2)
-U 2 (#caa173)
-L 1 (#1b58a2)
-U 2 (#caa171)
-R 2 (#7807d2)
-U 3 (#a77fa3)
-L 2 (#015232)
-U 2 (#7a21e3)
-`
-console.log(day18(example_data))
