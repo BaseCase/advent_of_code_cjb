@@ -29,36 +29,24 @@ const op2fn = {
 
 const score_item = r.compose(r.sum, r.values)
 
-const run_rules = (rules, item) => {
-  let workflow = [...rules['in']]
-  while (true) {
-    let rule = workflow.shift()
+const score_for_item = (id, item, rules) => {
+  if (id === 'R') return 0
+  if (id === 'A') return score_item(item)
+
+  const workflow = rules[id]
+  for (let rule of workflow) {
     if (rule.kind === 'goto') {
-      if (rule.dest === 'A'){
-        return score_item(item)
-      } else if (rule.dest === 'R') {
-        return 0
-      } else {
-        workflow = [...rules[rule.dest]]
-      }
+      return score_for_item(rule.dest, item, rules)
     } else {
-      let { key, op, value, dest } = rule
-      let fn = op2fn[op]
-      if (fn(item[key], value)) {
-        if (dest === 'A') {
-          return score_item(item)
-        } else if (dest === 'R') {
-          return 0
-        } else {
-          workflow = [...rules[dest]]
-        }
+      let fn = op2fn[rule.op]
+      if (fn(item[rule.key], rule.value)) {
+        return score_for_item(rule.dest, item, rules)
       }
     }
   }
 }
 
-
-const score_these_ranges = r.pipe(
+const score_ranges = r.pipe(
   r.values,
   r.map(([x, y]) => y - x + 1),
   r.product
@@ -66,9 +54,9 @@ const score_these_ranges = r.pipe(
 
 const score_for_ranges = (id, ranges, rules) => {
   if (id === 'R') return 0
-  if (id === 'A') return score_these_ranges(ranges)
+  if (id === 'A') return score_ranges(ranges)
 
-  const workflow = [...rules[id]]
+  const workflow = rules[id]
   let divvied_up = {...ranges}
 
   let score = 0
@@ -103,7 +91,7 @@ export const day19 = input => {
   const rules = r.compose(r.fromPairs, r.map(parse_ruleset))(raw_rules)
   const items = r.map(parse_item, raw_items)
 
-  const part01 = items.reduce((sum, item) => run_rules(rules, item) + sum, 0)
+  const part01 = r.sum(items.map(i => score_for_item('in', i, rules)))
 
   const starting_ranges = {
     x: [1, 4000],
@@ -111,7 +99,6 @@ export const day19 = input => {
     a: [1, 4000],
     s: [1, 4000],
   }
-
   const part02 = score_for_ranges('in', starting_ranges, rules)
 
   return [part01, part02]
