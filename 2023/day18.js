@@ -28,27 +28,28 @@ const calculate = instructions => {
   instructions.forEach(([dir, amt]) => {
     let [vecx, vecy] = vectors[dir]
     pos = [vecx*amt + pos[0], vecy*amt + pos[1]]
-    vertices.push([...pos])
+    vertices.push([BigInt(pos[0]), BigInt(pos[1])])
   })
 
   // shoelace algorithm to find polygon area
-  let sum1 = BigInt(0)
-  let sum2 = BigInt(0)
+  let sum1 = 0n
+  let sum2 = 0n
   for (let [p1, p2] of r.aperture(2, vertices)) {
-    sum1 += BigInt(p1[0] * p2[1])
-    sum2 += BigInt(p1[1] * p2[0])
+    sum1 += p1[0] * p2[1]
+    sum2 += p1[1] * p2[0]
   }
-  const area = BigInt(sum1 - sum2) / BigInt(2)
+  const area = (sum1 - sum2) / 2n
 
   // add the perimeter to the area for total squares dug
   const perim = r.pipe(
     r.pluck(1),
-    r.sum
+    r.sum,
+    BigInt
   )(instructions)
 
-  const interior = area - BigInt(perim/2) + BigInt(1)
+  const interior = area - perim / 2n + 1n
 
-  return BigInt(perim) + interior
+  return perim + interior
 }
 
 export const day18 = input => {
