@@ -1,5 +1,5 @@
 import * as r from 'ramda'
-import { as_lines, log } from './utils.js'
+import {as_lines, lcm, log} from './utils.js'
 import { all } from 'ramda'
 
 
@@ -21,14 +21,19 @@ const parse = r.pipe(
 )
 
 
-const push_button = machine => {
+const blessed_modules = ['lm', 'vm', 'jd', 'fv']
+
+const push_button = (machine, presses_so_far) => {
   const q = [{ src: 'input', dest: 'broadcaster', signal: 0 }]
   let low_pulse_count = 0
   let high_pulse_count = 0
 
   while (q.length) {
     let pulse = q.shift()
-    // log(pulse)
+
+    if (pulse.signal === 1 && pulse.dest === 'zg' && blessed_modules.indexOf(pulse.src) !== -1) {
+      log(`OH! ${pulse.src} send a 1 after ${presses_so_far} presses`)
+    }
 
     if (pulse.signal === 0) {
       ++low_pulse_count
@@ -38,10 +43,6 @@ const push_button = machine => {
 
     let module = machine[pulse.dest]
     if (module === undefined) continue   // output?
-
-    if (pulse.dest === 'rx' && pulse.signal === 0) {
-      return "YEAH!"
-    }
 
     switch (module.type) {
       case 'b':
@@ -121,13 +122,24 @@ export const day20 = input => {
   }
 
   let presses = 0
-  while (true) {
+  // manually ran this to inspect output
+  while (false) {
+    // visually graph the input to find the modules that input to zg, which is the & that will send a 0 to rx when all of its inputs are 1 simultaneously
+    // lm, vm, jd, fv
     ++presses
-    const result = push_button(machine)
-    if (result === "YEAH!") break;
+    push_button(machine, presses)
   }
 
-  const part02 = presses
+
+
+  // found these from visually inspecting log messages above
+  let jd = 3907
+  let fv = 3911
+  let lm = 3929
+  let vm = 4057
+
+
+  const part02 = [jd, fv, lm, vm].reduce(lcm, 1)
 
 
   return [part01, part02]

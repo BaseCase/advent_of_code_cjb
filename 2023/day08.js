@@ -1,5 +1,5 @@
 import * as r from 'ramda'
-import { as_lines, infinite_sequence } from './utils.js'
+import { as_lines, infinite_sequence, lcm } from './utils.js'
 
 
 const get_directions = r.pipe(as_lines, r.head, infinite_sequence)
@@ -12,8 +12,6 @@ const get_map = r.pipe(
 )
 
 const next_step_from_seq = (seq) => seq.next().value === 'L' ? 0 : 1
-const gcd = (a, b) => b ? gcd(b, a % b) : a
-const lcm = (a, b) => a * b / gcd(a, b)
 
 const walk_path = (node_map, dirs_seq, start_node, end_pred) => r.until(
   ([node, _]) => end_pred(node),

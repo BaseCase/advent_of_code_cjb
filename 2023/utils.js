@@ -21,6 +21,9 @@ export const key_to_point = pipe(split(','), map(Number.parseInt))
 export const parse_numbers = compose(map(Number.parseInt), match(/(-?\d+)/g))
 export const not_equals = complement(equals)
 
+export const gcd = (a, b) => b ? gcd(b, a % b) : a
+export const lcm = (a, b) => a * b / gcd(a, b)
+
 // given a 2D array, map over each element, returning a flat array. callback fn takes args (element, x, y)
 export const grid_map = curry((fn, grid) =>
   chain_indexed((row, y) =>
