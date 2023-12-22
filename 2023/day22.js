@@ -90,8 +90,87 @@ export const day22 = input => {
   }
 
   // now make a 3D grid with each point pointing to a member of bricks
+  let grid = {}
+  for (let brick of bricks) {
+    let startx = r.min(brick.x1, brick.x2)
+    let endx = r.max(brick.x1, brick.x2)
+    let starty = r.min(brick.y1, brick.y2)
+    let endy = r.max(brick.y1, brick.y2)
+    let startz = r.min(brick.z1, brick.z2)
+    let endz = r.max(brick.z1, brick.z2)
 
-  return 'hi'
+    for (let y=starty; y<=endy; ++y) {
+      for (let x=startx; x<=endx; ++x) {
+        for (let z=startz; z<=endz; ++z) {
+          let key = point_to_key([x, y, z])
+          grid[key] = brick
+        }
+      }
+    }
+  }
+
+  // log(grid)
+
+  // now check each for deletability.
+  //   Then to check each brick:
+  //       1. check each space in the grid 1 above all x,y's
+  //       2. for everything you hit that way,
+  //           1. check 1 *down*
+  //           2. if there's only one brick there, that's the brick we're considering deleting, and we can't delete it
+  let part01 = 0
+  log(bricks.length)
+  for (let brick of bricks) {
+    let startx = r.min(brick.x1, brick.x2)
+    let endx = r.max(brick.x1, brick.x2)
+    let starty = r.min(brick.y1, brick.y2)
+    let endy = r.max(brick.y1, brick.y2)
+    let topz = r.max(brick.z1, brick.z2)
+    let deletable = true
+
+    let bricks_one_above = new Set()
+    for (let y=starty; y<=endy; ++y) {
+      for (let x=startx; x<=endx; ++x) {
+        let key = point_to_key([x, y, topz+1])
+        let maybe_brick = grid[key]
+        if (maybe_brick !== undefined) {
+          bricks_one_above.add(maybe_brick)
+        }
+      }
+    }
+
+    for (let over of bricks_one_above) {
+      if (over.x1 === over.x2 && over.y1 === over.y2) {
+        deletable = false
+        continue
+      }
+
+      let supporting = new Set()
+      let startx = r.min(over.x1, over.x2)
+      let endx = r.max(over.x1, over.x2)
+      let starty = r.min(over.y1, over.y2)
+      let endy = r.max(over.y1, over.y2)
+
+      for (let y=starty; y<=endy; ++y) {
+        for (let x=startx; x<=endx; ++x) {
+          let key = point_to_key([x, y, topz])
+          let maybe_brick = grid[key]
+          if (maybe_brick !== undefined) {
+            supporting.add(maybe_brick)
+          }
+        }
+      }
+
+      if (supporting.size === 1) {
+        deletable = false
+      }
+    }
+
+    if (deletable) ++part01
+
+  }
+
+  // 418 is too high
+  return part01
 }
 
 
